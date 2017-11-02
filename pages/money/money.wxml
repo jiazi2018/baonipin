@@ -1,0 +1,8 @@
+<!--pages/money/money.wxml-->
+<view class='box'>
+    <view class='logo'>
+        <image src="../images/tixian.png" mode='widthFix'></image>
+        <view class='money'>8.88</view>
+    </view>
+    <view></view>
+</view>

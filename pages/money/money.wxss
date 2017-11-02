@@ -1,0 +1,13 @@
+/* pages/money/money.wxss */
+.logo{
+  text-align: center;
+  padding: 60rpx;
+}
+.logo image{
+  width:120rpx;
+}
+.logo .money{
+  color: #d24d46;
+  padding:40rpx 0 0 0;
+  font-size: 50rpx;
+}
