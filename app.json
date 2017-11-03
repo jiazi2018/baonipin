@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/money/money",
     "pages/question/question",
-    "pages/niceimg/niceimg"
+    "pages/niceimg/niceimg",
+    "pages/keep/keep",
+    "pages/inform/inform"
   ],
   "window":{
     "backgroundTextStyle":"light",

@@ -1,0 +1,33 @@
+<!--pages/inform/inform.wxml-->
+<view class='box'>
+    <view class='content'>
+         <view class='avatarUrl'> 
+            <image src="{{userInfo.avatarUrl}}" mode='widthFix'></image> 
+         </view>
+         <view class='avatarUrl'> 
+            <view class='nickName'>{{userInfo.nickName}}</view> 
+         </view>
+         <view class='question'>科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究</view>
+          <view class='question'>
+              <image src="{{userInfo.avatarUrl}}" mode='widthFix'></image>
+          </view>
+         <view class='type'>红包已失效</view>
+         <view class='type'>点击拼出上面的图片领红包</view>
+         <view class='tabs'>
+              <view><image src="../images/1.png"></image>去提现</view>
+              <view><image src="../images/1.png"></image>发起一个</view>
+              <view><image src="../images/1.png"></image>去转发</view>
+         </view>
+    </view>
+    <view class='all'>
+        <view class='notice'>
+            <view>共￥3元，领取1/1个</view>
+        </view>
+        <view class='list'>
+            <view><image></image> </view>
+            <view>
+
+            </view>
+        </view>
+    </view>
+</view>

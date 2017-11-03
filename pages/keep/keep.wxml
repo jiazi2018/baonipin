@@ -1,0 +1,29 @@
+<!--pages/keep/keep.wxml-->
+<view class='box'>
+    <view class='tabs'>
+        <view class='tab-item active' bindlongtap='keyword' data-value="1">我发出的</view>
+        <view class='tab-item' bindlongtap='keyword' data-value="1">我收到的</view>
+    </view>
+    <view class='content'>
+         <view class='avatarUrl'> 
+            <image src="{{userInfo.avatarUrl}}" mode='widthFix'></image> 
+         </view>
+         <view class='avatarUrl'> 
+            <view class='nickName'>{{userInfo.nickName}}发出（元）</view> 
+         </view>
+         <view class='give'>{{give}}9.00</view>
+         <view class='num'>数量<text>{{num}}9</text>个</view>
+    </view>
+    <view class='keepList'>
+        <view class='itemkeep' wx:for="{{keepList}}">
+            <view class='sum item'>
+                <view class='left'>{{item.title}}</view>
+                <view class='right'>￥{{item.money}}</view>
+            </view> 
+            <view class='time item'>
+                <view class='left'>{{item.time}}</view>
+                <view class='right'>{{item.now}}/{{item.all}}</view>
+            </view>
+        </view>
+    </view>
+</view>

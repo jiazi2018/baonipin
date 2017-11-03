@@ -4,5 +4,20 @@
         <image src="../images/tixian.png" mode='widthFix'></image>
         <view class='money'>8.88</view>
     </view>
-    <view></view>
+    <view class='content'>
+        <label>体现金额</label>
+        <view class='money'>
+          ￥<input type="text" value='33{{money}}'/>  
+        </view>
+        <view class='notice'>
+            提现金额直接打入您的微信钱包 
+            <view bindtap='allMoney' class="color">全部提现</view>
+        </view>
+        <button class='pay'>提现</button>
+        <view class='bottom'>
+            <view>1-5个工作日到账</view>
+            <view>每天可提现3次，每次至少1元</view>
+        </view>
+        <view class="color question">常见问题？</view>
+    </view>
 </view>

@@ -1,4 +1,4 @@
-// pages/money/money.js
+// pages/inform/inform.js
 Page({
 
   /**
@@ -12,7 +12,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    let userInfo = wx.getStorageSync('userInfo');
+    this.setData({
+      userInfo: userInfo
+    })
   },
 
   /**
@@ -28,12 +31,7 @@ Page({
   onShow: function () {
   
   },
-  //全部提现
-  allMoney(e){
-    this.setData({
-      money: this.data.money
-    })
-  },
+
   /**
    * 生命周期函数--监听页面隐藏
    */
@@ -48,23 +46,6 @@ Page({
   
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function () {
   
   }
