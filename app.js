@@ -1,39 +1,115 @@
-//app.js
+//app.jsvar的作用于是函数作用于，而let是块级别（大括号括起来的内容）const声明的变量只可以在声明时赋值，不可随意修改，这是最大的特点。
 App({
+  data: {
+    loginData: null,
+    sign: "",
+    mobile: "",
+    username: "",
+    mid: "",
+    sharecode: "",
+    authStatic: false,
+    loginStatic: false,
+    authSuccess: false
+  },
   onLaunch: function () {
-    // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
+    const apiurl = 'https://friend-guess.playonwechat.com/';
+    let that = this;
+    //调用API从本地缓存中获取数据
+    let logs = wx.getStorageSync('logs') || [];
     logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
-
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
+    wx.setStorageSync('logs', logs);
+    let extConfig = wx.getExtConfigSync ? wx.getExtConfigSync() : {};
+    that.data.kid = extConfig.kid;
+    that.data.kid = 123;
+    wx.setStorageSync('kid', that.data.kid); //that.data.kid
+    wx.showLoading({
+      title: '加载中',
     })
-    // 获取用户信息
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              this.globalData.userInfo = res.userInfo
-              wx.setStorageSync('userInfo', this.globalData.userInfo); 
-              // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-              // 所以此处加入 callback 以防止这种情况
-              if (this.userInfoReadyCallback) {
-                this.userInfoReadyCallback(res)
+    wx.login({
+      success: function (res) {
+        console.log(res);
+        if (res.code) {
+          //发起网络请求
+          wx.request({
+            url: apiurl+'api/auth?code=' + res.code + '&operator_id=' + that.data.kid,
+            data: {
+              code: res.code
+            },
+            success: function (res) {
+              console.log("成功");
+              console.log(res);
+              console.log("sign:",res.data.data.sign);
+              that.data.sign = res.data.data.sign;
+              that.data.loginData = res.data.data.sign;
+              that.data.sharecode = res.data.data.sharecode;
+              try {
+                wx.setStorageSync('sign', res.data.data.sign);
+                that.data.mobile = res.data.data.mobile;
+                that.data.mid = res.data.data.mid;
+                wx.getUserInfo({
+                  success: function (res) {
+                    console.log("微信信息");
+                    console.log(res);
+                    let userData = {};
+                    let userInfo = res.userInfo
+                    let nickName = userInfo.nickName
+                    let avatarUrl = userInfo.avatarUrl
+                    let gender = userInfo.gender //性别 0：未知、1：男、2：女
+                    let province = userInfo.province
+                    let city = userInfo.city
+                    let country = userInfo.country;
+                    wx.setStorageSync('userInfo', userInfo);//缓存存用户信息
+                    that.data.username = nickName;
+                    that.data.avatarUrl = avatarUrl;
+                    userData = {
+                      nickName: nickName,
+                      avatarUrl: avatarUrl,
+                      gender: gender,
+                      province: province,
+                      city: city,
+                      country: country
+                    };
+                    wx.request({
+                      url: apiurl + '/api/save-user-info?sign=' + that.data.sign + '&operator_id=' + that.data.kid,
+                      method: 'POST',
+                      data: {
+                        info: userData
+                      },
+                      success: function (res) {
+                        console.log("保存信息",res);
+                        that.data.authSuccess = true
+                        setTimeout(function () {
+                          wx.hideLoading()
+                        }, 500)
+                      }
+                    })
+                  },
+                  fail: function () {
+                    console.log("用户拒绝授权");
+                    wx.openSetting({
+                      success: (res) => {
+                        console.log(res);
+                      }
+                    })
+                  },
+                })
+              } catch (e) {
+                console.log("回话异常：" + e);
+
               }
-            }
+
+            },
           })
+
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg);
         }
       }
-    })
+    });
   },
+
   globalData: {
-    userInfo: null
+    userInfo: null,
+    sign: ""
   }
 })

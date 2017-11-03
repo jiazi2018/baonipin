@@ -1,0 +1,5 @@
+<!--pages/shareImg/shareImg.wxml-->
+<view class='box'>
+    <view class='img'><image src="../images/k1.png" mode='widthFix'></image></view>
+    <view class='save' bindtap='save'>保存手机</view>
+</view>

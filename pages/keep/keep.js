@@ -1,47 +1,20 @@
 // pages/keep/keep.js
+const app = getApp()
+const common = require('../../common.js');
+const apiurl = 'https://friend-guess.playonwechat.com/';
+let sign = wx.getStorageSync('sign');
+import tips from '../../utils/tips.js' 
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    keepList:[
-      {
-        title:'什么什么什么是的是的是得哦发我说呢人口日',
-        money:'2.00',
-        time:'2017-8-20 20:28',
-        all:3,
-        now:2
-      },
-      {
-        title: '什么什么什么是的是的是得哦发我说呢人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什么是的是的是得哦发我说呢人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什么是的是的是得哦发我说呢人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什么是的是的是得哦发我说呢人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      }
-    ]
+    receive_list:[],
+    total_count:'',
+    total_money:'',
+    send_list:'',
+    value:1
   },
 
   /**
@@ -53,21 +26,75 @@ Page({
       userInfo : userInfo
     })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
+  // 详情
+  inform(e){
+    let index = e.currentTarget.dataset.index;
+    wx.navigateTo({
+      url: '../inform/inform?index=' + index
+    })
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    let that = this;
+    wx.request({
+      url: apiurl + "red/got-red-list?sign=" + sign + '&operator_id=' + app.data.kid,
+      header: {
+        'content-type': 'application/json'
+      },
+      method: "GET",
+      success: function (res) {
+        console.log("收到红包:", res);
+        that.setData({
+           receive_list: res.data.data.receive_list,
+           total_count: res.data.data.total_count,
+           total_money: res.data.data.total_money
+        })
+      }
+    })
   },
-
+  keyword(e){
+    let that = this;
+    let value = e.currentTarget.dataset.value;
+    this.setData({
+      value: value
+    })
+    if (value==2){ //发出
+        wx.request({
+          url: apiurl + "red/sent-red-list?sign=" + sign + '&operator_id=' + app.data.kid,
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            console.log("发出红包:", res);
+            that.setData({
+              send_list: res.data.data.send_list,
+              total_count: res.data.data.total_count,
+              total_money: res.data.data.total_money
+            })
+          }
+        })
+    }else{  //收到
+        wx.request({
+          url: apiurl + "red/got-red-list?sign=" + sign + '&operator_id=' + app.data.kid,
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            console.log("收到红包:", res);
+            that.setData({
+              receive_list: res.data.data.receive_list,
+              total_count: res.data.data.total_count,
+              total_money: res.data.data.total_money
+            })
+          }
+        })
+    }
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

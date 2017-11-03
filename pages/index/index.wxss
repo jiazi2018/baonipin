@@ -14,7 +14,7 @@
     background: #fff;
     box-sizing: border-box;
     padding: 0 14rpx;
-    border-radius: 8rpx;
+    border-radius:20rpx;
     background-color: #fff;
     box-shadow: 0 5rpx 10rpx rgba(0,0,0,.21);
 }
@@ -24,7 +24,7 @@
   top:-50rpx;
 }
 .box .logo image{
-    width:100rpx;
+    width:140rpx;
     border-radius: 50%;
     border:2px solid #fff;
     box-sizing: border-box;
@@ -34,7 +34,7 @@
   flex-direction: row;
   height: 60rpx;
   line-height: 60rpx;
-  padding: 20rpx 0;
+  padding: 10rpx 0 10rpx 0;
 }
 .list .li{
   display: flex;
@@ -74,6 +74,9 @@
 .li .lei.active{
   background: #f4a755;
 }
+view .button.hide{
+  display: none;
+}
 view .button{
   border-width: 1px;
   border-style: solid;
@@ -92,6 +95,11 @@ view .button{
     font-size: 26rpx;
     color: #3098f9;
     padding-bottom: 20rpx;
+    display: flex;
+}
+.pin view{
+  flex: 1;
+  cursor: pointer;
 }
 .tiaozhan{
   background: url(http://ovhvevt35.bkt.clouddn.com/pin/right.png) no-repeat center right;
@@ -118,4 +126,28 @@ view .button{
 input {
   height:inherit;
   min-height: inherit;
+}
+.foot{
+    display: flex;
+    text-align: center;
+    font-size: 26rpx;
+    background: #fff;
+    padding: 20rpx 0;
+}
+.foot .tab{
+  flex: 1;
+  cursor: pointer;
+}
+.foot .tab image{
+  width:40rpx;
+}
+.navigator-hover ,navigator{
+  background-color:#fff;
+  opacity:1;
+}
+.bottom{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }

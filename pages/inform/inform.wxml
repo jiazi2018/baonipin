@@ -2,32 +2,86 @@
 <view class='box'>
     <view class='content'>
          <view class='avatarUrl'> 
-            <image src="{{userInfo.avatarUrl}}" mode='widthFix'></image> 
+         <!--{{userInfo.avatarUrl}}  -->
+            <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image> 
          </view>
          <view class='avatarUrl'> 
             <view class='nickName'>{{userInfo.nickName}}</view> 
          </view>
-         <view class='question'>科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究科学研究</view>
-          <view class='question'>
-              <image src="{{userInfo.avatarUrl}}" mode='widthFix'></image>
+         <view class='question'>科学研究科学研究科学研究研究科学研究科学研究科学研究科学研究科学研究</view>
+           <view class='question'>
+              <image src="../images/1.png" mode='widthFix'></image>
+          </view> 
+          <view class='money'>
+            <view><text>33</text>元</view>
           </view>
-         <view class='type'>红包已失效</view>
-         <view class='type'>点击拼出上面的图片领红包</view>
+         <view class='type no'>红包已失效</view>
+         <view class='type yes'>点击拼出上面的图片领红包</view>
+         <!--tABS  -->
          <view class='tabs'>
-              <view><image src="../images/1.png"></image>去提现</view>
-              <view><image src="../images/1.png"></image>发起一个</view>
-              <view><image src="../images/1.png"></image>去转发</view>
+              <view class='item' bindtap='money'><image src="../images/iconkeep.png" mode='widthFix'></image>去提现</view>
+              <view class='item' bindtap='add'><image src="../images/iconadd.png" mode='widthFix'></image>发起一个</view>
+              <view class='item' bindtap='share'><image src="../images/iconshare.png" mode='widthFix'></image>去转发</view>
          </view>
     </view>
     <view class='all'>
         <view class='notice'>
             <view>共￥3元，领取1/1个</view>
         </view>
-        <view class='list'>
-            <view><image></image> </view>
-            <view>
-
+        <view class='list' wx:for="{{keepList}}">
+            <view class='top'> <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image>  </view>
+            <view class='keepList'>
+                <view class='itemkeep'  bindtap='inform' data-index='{{index}}'>
+                    <view class='sum item'>
+                        <view class='left'>
+                            {{item.title}}
+                            <image src="../images/girl.png" mode='widthFix'></image>
+                            <image src="../images/box.png" mode='widthFix'></image>
+                        </view>
+                        <view class='right'>￥{{item.money}}</view>
+                    </view> 
+                    <view class='time item'>
+                        <view class='left'>{{item.time}}</view>
+                        <view class='right'>{{item.now}}/{{item.all}}</view>
+                    </view>
+                </view>
             </view>
         </view>
+    </view>
+    <!--文字弹窗  -->
+    <view class='Tword' style='display:none'>
+        <view class='tishi'>提示：请按顺序勾选</view>
+        <view class='time'><view class='now'>22</view></view>
+        <view class='red'>文字</view>
+        <view class='grid'>
+            <view class='grid-item'>是</view>
+            <view class='grid-item'>是</view>
+        </view>
+    </view>
+    <!--失败弹窗  -->
+    <view class='false' style='display:none'>
+        <view class='img'><image src="../images/red.png" mode='widthFix'></image></view>
+        <view class='tishi'>很遗憾，您未在指定时间拼出文字</view>
+        <view class='button'>
+            <view class='close' bindtap='close'>关闭</view>
+            <view class='again' bindtap='again'>再来一次</view>
+        </view>
+    </view>
+    <!--成功弹窗  -->
+    <view class='success' style='display:none'>
+        <view class='avatarUrl'> 
+         <!--{{userInfo.avatarUrl}}  -->
+            <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image> 
+         </view>
+         <view class='avatarUrl'> 
+            <view class='nickName'>{{userInfo.nickName}}user</view> 
+         </view>
+         <view class='question'>科学研究科学研究科学研究研究科学研究科学研究科学研究科学研究科学研究</view>
+           <view class='question'>
+              <image src="../images/1.png" mode='widthFix'></image>
+          </view> 
+          <view class='open'>
+             <image src="../images/open.png" mode='widthFix'></image> 
+          </view>
     </view>
 </view>

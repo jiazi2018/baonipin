@@ -5,7 +5,10 @@
     "pages/question/question",
     "pages/niceimg/niceimg",
     "pages/keep/keep",
-    "pages/inform/inform"
+    "pages/inform/inform",
+    "pages/share/share",
+    "pages/shareImg/shareImg",
+    "pages/packet/packet"
   ],
   "window":{
     "backgroundTextStyle":"light",

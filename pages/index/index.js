@@ -1,15 +1,59 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+const common = require('../../common.js');
+const apiurl = 'https://friend-guess.playonwechat.com/';
+let sign = wx.getStorageSync('sign');
+import tips from '../../utils/tips.js' 
 Page({
   data: {
     motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
+    style:'text', //红包类型
     array: ['30秒', '5秒', '10秒', '15秒', '20秒', '30秒', '40秒', '50秒', '60秒'],
-    text: ['请输入文字','大吉大利，今晚吃鸡', '升职加薪总经理，走上人生巅峰~', '科学研究明表汉怎字序排不也影响阅读', '生日快乐~'],
+    textList: ['请输入文字','大吉大利，今晚吃鸡', '升职加薪总经理，走上人生巅峰~', '科学研究明表汉怎字序排不也影响阅读', '生日快乐~'],
     speak:['我爱你','我喜欢你','我是逗比'],
+    typeP: [
+      {
+        title:'拼字红包',
+        typei:"text",
+        red:'生成拼字红包',
+        active:true
+      }, {
+        title: '拼图红包',
+        typei: "img",
+        red: '生成拼图红包',
+        active: false
+      }, {
+        title: '口令红包',
+        typei: "voice",
+        red: '生成口令红包',
+        active: false
+      }, {
+        title: '颜值红包',
+        typei: "face",
+        red: '生成颜值红包',
+        active: false
+      }
+    ],
+    footList:[
+      {
+        img:'../images/1.png',
+        title:'我的记录',
+        url:'../keep/keep'
+      },
+      {
+        img: '../images/2.png',
+        title: '余额提现',
+        url: '../money/money'
+      },
+      {
+        img: '../images/3.png',
+        title: '常见问题',
+        url: '../question/question'
+      }
+    ],
     index: 0,
     wenzi:0,
     shuo:0,
@@ -18,37 +62,199 @@ Page({
     money2: "",
     num:'',
     options :false,
-    speakAll:false
+    speakAll:false,
+    text:true, //文字
+    img:false, //图片
+    voice:false, //语音
+    face:false,
+    play:true //红包玩法
   },
   
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      wx.setStorageSync('userInfo', app.globalData.userInfo); 
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+    //回调
+    common.getSign(function () {
+      let  sign = wx.getStorageSync('sign');
+      console.log('commonindexsign:', sign);
+    })
+  },
+  onShow:function(){
+    // 用户信息
+    let that = this;
+    let userInfo = wx.getStorageSync('userInfo');
+    let timestamp = wx.getStorageSync('timestamp');//时间戳
+    that.setData({
+      userInfo: userInfo
+    })
+    //24h
+    if (!timestamp){
+        wx.request({
+          url: apiurl + "red/refunded?sign=" + sign + '&operator_id=' + app.data.kid,
+          header: {
+            'content-type': 'application/json'
+          },
+          method: "GET",
+          success: function (res) {
+            console.log("24h:", res);
+            wx.setStorageSync('timestamp', new Date());
+          }
         })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
+    }
+    
+  },
+  // 红包玩法 true拼 false普
+  play(){
+    this.setData({
+      play: !this.data.play
+    })
+  },
+  // 红包类型
+  change(e){
+    let that = this;
+    let index = e.currentTarget.dataset.index;
+    let typeP = that.data.typeP;
+    if (index == 3){ //期待
+      tips.alert("敬请期待！");
+    }
+    if(index==1){
+      that.setData({
+        text: false, //文字
+        img: true, //图片
+        voice: false, //语音
+        face: false
+      })
+    } else if (index == 2){
+      that.setData({
+        text: false, //文字
+        img: false, //图片
+        voice: true, //语音
+        face: false
+      })
+    } else if (index == 3) {
+      that.setData({
+        text: true, //文字
+        img: false, //图片
+        voice: false, //语音
+        face: false
+      })
+    } else if (index == 0) {
+      that.setData({
+        text: false, //文字
+        img: false, //图片
+        voice: false, //语音
+        face: true
       })
     }
+    for (let i = 0; i < typeP.length;i++){
+      typeP[i].active = false;
+      if(i == index){
+        typeP[i].active = true;
+      }
+      that.setData({
+        typeP
+      })
+    }
+  },
+  // 生成红包
+  formSubmit: function (e) {
+    let that = this;
+    let inform = {};
+    let sign = wx.getStorageSync('sign');
+    let style = that.data.style;//红包类型
+    let form_id = e.detail.formId;//红包类型
+    console.log(sign);
+   
+    if (!that.data.word) {
+      tips.alert("您没有填写内容");
+      return false;
+    }
+    if (!that.data.num) {
+      tips.alert("您没有填写数量");
+      return false;
+    }
+    if (!form_id) {
+      tips.alert("formId错误");
+      return false;
+    }
+    // 请求拼字红包 wenzi | content
+    if (style == 'text'){
+        let play = that.data.play;
+        console.log("money:",that.data.money1, that.data.money2,);
+        console.log("count:", that.data.num );
+        console.log("content:", that.data.word);
+        console.log("form_id:", e.detail.formId);
+        if(play==true){
+          if (!that.data.money1) {
+            tips.alert("您没有填写金额");
+            return false;
+          }
+          console.log("play拼:", play);
+           inform = {
+            money: that.data.money1,
+            count: that.data.num,
+            content: that.data.word,
+            form_id: form_id + Math.random(),
+            type: 'random'
+          }
+        }else{
+          console.log("play普:", play);
+          if (!that.data.money2) {
+            tips.alert("您没有填写金额");
+            return false;
+          }
+          inform = {
+            money: that.data.money2 * that.data.num,
+            count: that.data.num,
+            content: that.data.word,
+            form_id: form_id + Math.random(),
+            type: 'average '
+          }
+        }
+        wx.request({
+            url: apiurl + "red/create-text-red?sign=" + sign + '&operator_id=' + app.data.kid ,
+            data: inform,
+            header: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            method: "POST",
+            success: function (res) {
+              console.log("拼字红包:", res);
+              if (res.data.status == '1') {
+                if(res.data.data.finished==true){
+                  tips.loading("您没有填写数量");
+                   // 支付成功跳转
+                    wx.navigateTo({
+                      url: '../inform/inform'
+                    })
+                }else{ //余额不足 
+                     let params = res.data.data.params;
+                     // 调用支付
+                     wx.requestPayment({
+                       timeStamp: res.data.data.timeStamp,
+                       nonceStr: res.data.data.nonceStr,
+                       package: res.data.data.package,
+                       signType: res.data.data.signType,
+                       paySign: res.data.data.paySign,
+                       'success': function (res) {
+                         setTimeout(function () {
+                           // 支付成功跳转
+                           wx.navigateTo({
+                             url: '../inform/inform'
+                           })
+                         }, 300)
+                       },
+                       'fail': function (res) {
+                         tips.error(res.data.msg);
+                       }
+                   })
+                }
+                tips.success("支付成功")
+              } else {
+                tips.alert(res.data.mesg)
+              }
+            }
+        })
+    }
+    
   },
   //事件处理函数text
   bindPickerChange1: function (e) {
@@ -125,12 +331,5 @@ Page({
       }
     })
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  }
+
 })

@@ -1,4 +1,9 @@
 // pages/niceimg/niceimg.js
+const app = getApp();
+const common = require('../../common.js');
+const apiurl = 'https://friend-guess.playonwechat.com/';
+let sign = wx.getStorageSync('sign');
+import tips from '../../utils/tips.js'
 Page({
 
   /**

@@ -1,4 +1,9 @@
 // pages/money/money.js
+const app = getApp();
+const common = require('../../common.js');
+const apiurl = 'https://friend-guess.playonwechat.com/';
+let sign = wx.getStorageSync('sign');
+import tips from '../../utils/tips.js'
 Page({
 
   /**
@@ -34,38 +39,12 @@ Page({
       money: this.data.money
     })
   },
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  // 常见问题
+  question(){
+    wx.navigateTo({
+      url: '../question/question'
+    })
   }
+  
+
 })

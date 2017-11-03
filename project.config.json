@@ -9,7 +9,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "1.6.0",
-	"appid": "wx2262391ecbef5a1b",
+	"appid": "wxc7c079b7692732ca",
 	"projectname": "%E5%8C%85%E4%BD%A0%E6%8B%BC",
 	"condition": {
 		"search": {
@@ -45,6 +45,18 @@
 					"id": -1,
 					"name": "inform",
 					"pathName": "pages/inform/inform",
+					"query": ""
+				},
+				{
+					"id": 4,
+					"name": "share",
+					"pathName": "pages/share/share",
+					"query": "red_id=8&bg_id=3"
+				},
+				{
+					"id": -1,
+					"name": "shareImg",
+					"pathName": "pages/shareImg/shareImg",
 					"query": ""
 				}
 			]

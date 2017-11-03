@@ -18,6 +18,6 @@
             <view>1-5个工作日到账</view>
             <view>每天可提现3次，每次至少1元</view>
         </view>
-        <view class="color question">常见问题？</view>
+        <view class="color question" bindtap='question'>常见问题？</view>
     </view>
 </view>
