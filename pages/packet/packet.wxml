@@ -2,6 +2,6 @@
 <view class='box'>
     <view class='flex'>
         <view class='img' bindtap='change'  wx:for="{{imgList}}" 
-              data-bg_id="{{item.index}}+1"><image src="{{item.img}}" mode='widthFix'></image></view>
+              data-bg_id="{{index+1}}"><image src="{{item.img}}" mode='widthFix'></image></view>
     </view> 
 </view>

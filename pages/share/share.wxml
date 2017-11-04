@@ -3,17 +3,29 @@
     <view class='content'>
          <view class='avatarUrl'> 
          <!--{{userInfo.avatarUrl}}  -->
-            <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image> 
+            <image src="{{shareList.avatar}}" mode='widthFix'></image> 
+         </view>
+         <view class='avatarUrl'> 
+            <view class='nickName'>
+                  发了一个
+                  <text wx:if="{{shareList.red_type=='text'}}">拼字</text>
+                  <text wx:if="{{shareList.red_type=='img'}}">拼图</text>
+                  <text wx:if="{{shareList.red_type=='voice'}}">语音</text>
+                 红包
+            </view> 
          </view>
          <!--拼字  -->
-          <view class='question'>科学研究科学研究科学研究研究科学研究科学研究科学研究科学研究科学研究</view>
+          <view class='question' wx:if="{{shareList.red_type =='text'}}">{{shareList.red_content}}</view>
           <!--拼图  -->
-          <view class='question'>
-              <image src="../images/1.png" mode='widthFix'></image>
+          <view class='question' wx:if="{{shareList.ret_type == 'img'}}">
+              <image src="{{shareList.red_content}}" mode='widthFix'></image>
           </view> 
+          <!--拼字  -->
+          <view class='question' wx:if="{{shareList.ret_type == 'voice'}}">{{shareList.red_content}}</view>
+          <!--拼图  -->
           <!--二维码  -->
           <view class='question'>
-              <image src="../images/1.png" mode='widthFix'></image>
+              <image src="{{shareList.qr_url}}" mode='widthFix'></image>
           </view>
           <view class='option'>
               <view class='type no'><button class="flex" open-type="share">转发到群聊</button></view>

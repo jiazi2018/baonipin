@@ -49,8 +49,9 @@ Page({
       let bg_id = e.currentTarget.dataset.bg_id;
       wx.setStorageSync('bg_id', e.currentTarget.dataset.bg_id);
       wx.navigateTo({
-        url: '../share/share?bg_id=' + bg_id + '&red_id=' + red_id
+        url: '../share/share?red_id=' + that.data.red_id + '&bg_id=' + bg_id
       })
+      console.log(bg_id);
   }
 
 })

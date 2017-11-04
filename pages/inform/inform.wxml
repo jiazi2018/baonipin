@@ -2,21 +2,30 @@
 <view class='box'>
     <view class='content'>
          <view class='avatarUrl'> 
-         <!--{{userInfo.avatarUrl}}  -->
-            <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image> 
+            <image src="{{member_info.avatar}}" mode='widthFix'></image> 
          </view>
          <view class='avatarUrl'> 
-            <view class='nickName'>{{userInfo.nickName}}</view> 
+            <view class='nickName'>{{member_info.nickname}}</view> 
          </view>
-         <view class='question'>科学研究科学研究科学研究研究科学研究科学研究科学研究科学研究科学研究</view>
-           <view class='question'>
-              <image src="../images/1.png" mode='widthFix'></image>
+         <!--文字  -->
+         <view class='question' wx:if="{{red_info.red_type=='text'}}">{{red_info.content}}</view>
+         <!--图片  -->
+          <view class='question' wx:if="{{red_info.red_type=='img'}}">
+              <image bindtap='prewImg' src="{{red_info.content}}" mode='widthFix'></image>
+              <view class='big' bindtap='prewImg'>
+                  <image src="../images/big.png" mode='widthFix'></image>
+              </view>
           </view> 
+           <!--语音 -->
+         <view class='question' wx:if="{{red_info.red_type=='voice'}}">{{red_info.content}}</view>
           <view class='money'>
-            <view><text>33</text>元</view>
+            <view><text>{{red_info.total_money}}</text>元</view>
           </view>
-         <view class='type no'>红包已失效</view>
-         <view class='type yes'>点击拼出上面的图片领红包</view>
+          <!-- 红包状态 wait待领取 received已领取 end已领完 refunded已退款 -->
+         <view class='type no' wx:if="{{red_status == 'end' || red_status == 'refunded' ||red_status =='received'}}">
+              红包已失效
+          </view>
+         <view class='type yes' wx:if="{{red_status == 'wait'}}">点击拼出上面的图片领红包</view>
          <!--tABS  -->
          <view class='tabs'>
               <view class='item' bindtap='money'><image src="../images/iconkeep.png" mode='widthFix'></image>去提现</view>
@@ -26,23 +35,26 @@
     </view>
     <view class='all'>
         <view class='notice'>
-            <view>共￥3元，领取1/1个</view>
+            <view>共￥{{red_info.total_money}}元，领取{{red_info.receive_count}}/{{red_info.total_count}}个</view>
         </view>
-        <view class='list' wx:for="{{keepList}}">
-            <view class='top'> <image src="https://qncdn.playonwechat.com/nice/users.png" mode='widthFix'></image>  </view>
+        <!--领取列表  -->
+        <view class='list' wx:for="{{receive_info}}">
+            <view class='top'> <image src="{{item.avatar}}" mode='widthFix'></image>  </view>
             <view class='keepList'>
                 <view class='itemkeep'  bindtap='inform' data-index='{{index}}'>
                     <view class='sum item'>
                         <view class='left'>
-                            {{item.title}}
-                            <image src="../images/girl.png" mode='widthFix'></image>
-                            <image src="../images/box.png" mode='widthFix'></image>
+                            {{item.nickname}}
+                            <!--sex  -->
+                            <image wx:if="{{item.gender == 2}}" src="../images/girl.png" mode='widthFix'></image>
+                            <image wx:if="{{item.gender == 1}}" src="../images/box.png" mode='widthFix'></image>
+                            <image wx:if="{{item.gender == 0}}" src="../images/question-icon.png" mode='widthFix'></image>
                         </view>
-                        <view class='right'>￥{{item.money}}</view>
+                        <view class='right'>￥{{item.receive_money}}</view>
                     </view> 
                     <view class='time item'>
-                        <view class='left'>{{item.time}}</view>
-                        <view class='right'>{{item.now}}/{{item.all}}</view>
+                        <view class='left' style='width:50%;'>{{item.content}}</view>
+                        <view class='right' style='width:50%;'>{{item.receive_time}}</view>
                     </view>
                 </view>
             </view>

@@ -81,11 +81,12 @@ Page({
     // 用户信息
     let that = this;
     let userInfo = wx.getStorageSync('userInfo');
-    let timestamp = wx.getStorageSync('timestamp');//时间戳
     that.setData({
       userInfo: userInfo
     })
-    //24h
+     //24h
+    let timestamp = wx.getStorageSync('timestamp');//时间戳
+    console.log("timestamp:",timestamp);
     if (!timestamp){
         wx.request({
           url: apiurl + "red/refunded?sign=" + sign + '&operator_id=' + app.data.kid,
@@ -95,9 +96,30 @@ Page({
           method: "GET",
           success: function (res) {
             console.log("24h:", res);
-            wx.setStorageSync('timestamp', new Date());
+            let timestamp = Date.parse(new Date());
+            console.log(timestamp);
+            wx.setStorageSync('timestamp', timestamp);
           }
         })
+    } else { //有timestamp
+      let nowtimestamp = Date.parse(new Date());
+      var d = (nowtimestamp - timestamp) / 1000;
+      console.log(d);
+        if (d >= 86400) {
+            wx.request({
+              url: apiurl + "red/refunded?sign=" + sign + '&operator_id=' + app.data.kid,
+              header: {
+                'content-type': 'application/json'
+              },
+              method: "GET",
+              success: function (res) {
+                console.log("24h:", res);
+                let timestamp = Date.parse(new Date());
+                console.log(timestamp);
+                wx.setStorageSync('timestamp', timestamp);
+              }
+            })
+        }
     }
     
   },
@@ -219,37 +241,53 @@ Page({
             success: function (res) {
               console.log("拼字红包:", res);
               if (res.data.status == '1') {
-                if(res.data.data.finished==true){
-                  tips.loading("您没有填写数量");
-                   // 支付成功跳转
-                    wx.navigateTo({
-                      url: '../inform/inform'
+                if (res.data.data.finished == false) {//余额不足 
+                    let params = res.data.data.params;
+                    // 调用支付
+                    wx.requestPayment({
+                      timeStamp: res.data.data.params.timeStamp,
+                      nonceStr: res.data.data.params.nonceStr,
+                      package: res.data.data.params.package,
+                      signType: res.data.data.params.signType,
+                      paySign: res.data.data.params.paySign,
+                      'success': function (res) {
+                          // 获取red_id
+                        wx.request({
+                          url: apiurl + "red/go-new-red-detail?sign=" + sign + '&operator_id=' + app.data.kid,
+                          header: {
+                            'content-type': 'application/json'
+                          },
+                          method: "GET",
+                          success: function (res) {
+                            console.log("红包详情:", res);
+                            console.log(res.data.data);
+                            that.setData({
+                              red_id: res.data.data
+                            })
+                          }
+                        })
+                          setTimeout(function () {
+                            // 微信支付成功跳转
+                            wx.navigateTo({
+                              url: '../inform/inform?red_id=' + that.data.red_id
+                            })
+                          }, 300)
+                      },
+                      fail: function (res) {
+                        console.log(res);
+                        tips.error(res.data.msg);
+                      }
                     })
-                }else{ //余额不足 
-                     let params = res.data.data.params;
-                     // 调用支付
-                     wx.requestPayment({
-                       timeStamp: res.data.data.timeStamp,
-                       nonceStr: res.data.data.nonceStr,
-                       package: res.data.data.package,
-                       signType: res.data.data.signType,
-                       paySign: res.data.data.paySign,
-                       'success': function (res) {
-                         setTimeout(function () {
-                           // 支付成功跳转
-                           wx.navigateTo({
-                             url: '../inform/inform'
-                           })
-                         }, 300)
-                       },
-                       'fail': function (res) {
-                         tips.error(res.data.msg);
-                       }
-                   })
+                }else{ 
+                  tips.loading("创建成功");
+                  // 余额支付成功跳转
+                  wx.navigateTo({
+                    url: '../inform/inform?red_id=' + res.data.data.finished
+                  })
                 }
-                tips.success("支付成功")
+                
               } else {
-                tips.alert(res.data.mesg)
+                tips.alert(res.data.msg)
               }
             }
         })

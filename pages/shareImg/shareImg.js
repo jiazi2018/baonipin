@@ -17,39 +17,45 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let imgurl = wx.getStorageSync('imgurl');
+    let imgUrl = wx.getStorageSync('imgUrl');
     this.setData({
-      imgurl: imgurl
+      imgUrl: imgUrl
     })
   },
   onShow: function () {
-    // 红包二维码详情
-    wx.request({
-      url: apiurl + "red/create-bg-qr?sign=" + sign + '&operator_id=' + app.data.kid,
-      data: {
-        red_id: that.data.red_id,
-        bg_id: that.data.bg_id
-      },
-      header: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      method: "POST",
-      success: function (res) {
-        console.log("二维码:", res);
-        let status = res.data.status
-        if (status == 1) {
-          wx.setStorageSync('imgurl', res.data.data);
-          wx.navigateTo({
-            url: '../share/share?bg_id=' + bg_id + '&red_id=' + red_id
-          })
-        } else {
-          tips.error(res.data.msg);
-        }
+    let that = this;
+  },
 
+  // 预览海报
+  prewImg() {
+    wx.previewImage({
+      current: '' + this.data.imgUrl + '', // 当前显示图片的http链接
+      urls: ['' + this.data.imgUrl + ''] // 需要预览的图片http链接列表
+    })
+  },
+  // 保存图片
+  save: function () {
+    let that = this;
+    wx.downloadFile({
+      url: '' + that.data.imgUrl + '', 
+      success: function (res) {
+        console.log(res);
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success(res) {
+            wx.showToast({
+              title: '图片保存成功，请去相册查看',
+              icon: 'success',
+              duration: 800
+            })
+          }
+        })
+      },
+      fail: function (err) {
+        console.log(err)
       }
     })
   }
- 
 
 
-})
+ })

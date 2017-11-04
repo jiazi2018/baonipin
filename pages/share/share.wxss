@@ -9,13 +9,18 @@ page{
   background-size: contain;
 }
 .content .avatarUrl image{
-    width:140rpx;
+    width:100rpx;
     border-radius: 50%;
     border:2px solid #fff;
     box-sizing: border-box;
 }
 .avatarUrl .nickName{
-  color:#fff;
+  color:#f3dab2;
+  font-size: 26rpx;
+  padding: 20rpx 0;
+}
+.avatarUrl .nickName view{
+  display: inline-block;
 }
 .content .question{
   font-size: 40rpx;
@@ -23,8 +28,9 @@ page{
   padding:20rpx 0;
 }
 .content .question image{
-    width: 60rpx;
-    border:1px solid #ddd;
+    width: 200rpx;
+    border-radius: 50%;
+    border:2px solid #f3dab2;
 }
 .content .type{
     width:80%;

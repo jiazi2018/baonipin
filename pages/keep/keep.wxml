@@ -20,7 +20,7 @@
     </view>
     <!--收到  -->
     <view class='keepList' wx:if="{{value == 1}}">
-        <view class='itemkeep' wx:for="{{receive_list}}" bindtap='inform' data-index='{{index}}'>
+        <view class='itemkeep' wx:for="{{receive_list}}" bindtap='inform' data-index='{{index}}' data-red_id='{{item.red_id}}'>
             <view class='sum item'>
                 <view class='left'>{{item.content}}</view>
                 <view class='right'>￥{{item.money}}</view>
@@ -33,7 +33,7 @@
     </view>
     <!--发出  -->
     <view class='keepList' wx:if="{{value == 2}}">
-        <view class='itemkeep' wx:for="{{send_list}}" bindtap='inform' data-index='{{index}}'>
+        <view class='itemkeep' wx:for="{{send_list}}" bindtap='inform' data-index='{{index}}' data-red_id='{{item.red_id}}'>
             <view class='sum item'>
                 <view class='left'>{{item.content}}</view>
                 <view class='right'>￥{{item.total_money}}</view>

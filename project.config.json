@@ -42,10 +42,10 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "inform",
 					"pathName": "pages/inform/inform",
-					"query": ""
+					"query": "red_id=26"
 				},
 				{
 					"id": 4,
@@ -58,6 +58,12 @@
 					"name": "shareImg",
 					"pathName": "pages/shareImg/shareImg",
 					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "packet",
+					"pathName": "pages/packet/packet",
+					"query": "red_id=26"
 				}
 			]
 		}

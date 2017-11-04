@@ -10,53 +10,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-    red_id:8,
-    keepList: [
-      {
-        title: '什么什么什么日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什呢人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什么是人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      },
-      {
-        title: '什么什么什么人口日',
-        money: '2.00',
-        time: '2017-8-20 20:28',
-        all: 3,
-        now: 2
-      }
-    ]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options);
     let userInfo = wx.getStorageSync('userInfo');
     this.setData({
-      userInfo: userInfo
+      userInfo: userInfo,
+      red_id: options.red_id
     })
   },
   /**
@@ -64,8 +28,9 @@ Page({
    */
   onShow: function () {
       let that = this;
+      let sign = wx.getStorageSync('sign');
       wx.request({
-        url: apiurl + "red/share-red?sign=" + sign + '&operator_id=' + app.data.kid,
+        url: apiurl + "red/red-detail?sign=" + sign + '&operator_id=' + app.data.kid,
         data:{
           red_id: that.data.red_id
         },
@@ -76,7 +41,11 @@ Page({
         success: function (res) {
           console.log("红包详情:", res);
           that.setData({
-            
+             informList:res.data.data,
+             member_info: res.data.data.member_info,
+             receive_info: res.data.data.receive_info, 
+             red_info: res.data.data.red_info,
+             red_status: res.data.data.red_status
           })
         }
       })
@@ -89,7 +58,13 @@ Page({
       url: '../share/share?red_id=' + this.data.red_id
     })
   },
-
+  // 预览拼图图片
+  prewImg() {
+    wx.previewImage({
+      current: '' + this.data.red_info.content + '', // 当前显示图片的http链接
+      urls: ['' + this.data.red_info.content + ''] // 需要预览的图片http链接列表
+    })
+  },
   onShareAppMessage: function () {
   
   }

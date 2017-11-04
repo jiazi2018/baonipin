@@ -26,6 +26,9 @@
     border:2px solid #d24d46;
     box-sizing: border-box;
 }
+.avatarUrl .nickName{
+    font-size: 26rpx;
+}
 .content .give{
   font-size: 60rpx;
   color: #d24d46;

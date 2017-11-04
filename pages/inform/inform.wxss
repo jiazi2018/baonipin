@@ -111,6 +111,7 @@
   color: #626262;
 }
 .keepList .itemkeep .item .left{
+  text-align: left;
   display: inline-block;
   width: 69%;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
@@ -119,6 +120,9 @@
   display: inline-block;
   width: 30%;
   text-align: right;
+}
+.time .left{
+  text-align: left;
 }
 .keepList .itemkeep .sum .right,.time .left{
   color: #d24d46;
@@ -207,6 +211,23 @@ view.again{
     border-radius: 50%;
     border:2px solid #fff;
     box-sizing: border-box;
+}
+.content .question{
+  position: relative;
+}
+.question .big{
+  width:60rpx;
+  height: 60rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: scale(1) translate(-50%, -50%);
+  background: #000;
+  opacity: 0.5;
+}
+.question .big image{
+  width:30rpx;
+  border:none;
 }
 .avatarUrl .nickName{
   color:#fff;

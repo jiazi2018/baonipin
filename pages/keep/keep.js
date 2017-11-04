@@ -28,9 +28,9 @@ Page({
   },
   // 详情
   inform(e){
-    let index = e.currentTarget.dataset.index;
+    let red_id = e.currentTarget.dataset.red_id;
     wx.navigateTo({
-      url: '../inform/inform?index=' + index
+      url: '../inform/inform?red_id=' + red_id
     })
   },
 
@@ -39,6 +39,7 @@ Page({
    */
   onShow: function () {
     let that = this;
+    let sign = wx.getStorageSync('sign');
     wx.request({
       url: apiurl + "red/got-red-list?sign=" + sign + '&operator_id=' + app.data.kid,
       header: {
@@ -57,6 +58,7 @@ Page({
   },
   keyword(e){
     let that = this;
+    let sign = wx.getStorageSync('sign');
     let value = e.currentTarget.dataset.value;
     this.setData({
       value: value
