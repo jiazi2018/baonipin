@@ -10,7 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-  
+    all:true, //默认为输入框
+    money:8.88
   },
 
   /**
@@ -34,17 +35,51 @@ Page({
   
   },
   //全部提现
-  allMoney(e){
+  allMoney(){
     this.setData({
-      money: this.data.money
+      money: this.data.data,
+      all: this.data.all
+    })
+    console.log(this.data.data);
+  },
+  bindPickerChange: function (e) {
+    console.log('money', e.detail.value)
+    this.setData({
+      money: e.detail.value
     })
   },
+  // 提现
+  pay(e){
+    let that = this;
+    console.log("formId:", e.detail.formId);
+    // 提现
+    wx.request({
+      url: apiurl + "red/apply-cash?sign=" + sign + '&operator_id=' + app.data.kid,
+      data:{
+        money: that.data.money,
+        form_id: e.detail.formId
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      method: "GET",
+      success: function (res) {
+        console.log("提现:", res);
+        var status = res.data.status;
+        if (status == 1){
+          tips.success("提现成功！");
+        }else{
+          tips.alert(res.data.msg);
+        }
+        
+      }
+    })
+   
+  },
   // 常见问题
-  question(){
+  question() {
     wx.navigateTo({
       url: '../question/question'
     })
   }
-  
-
 })
